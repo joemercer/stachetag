@@ -4,29 +4,24 @@ var routes = require('./routes');
 var http = require('http');
 var path = require('path');
 
-var app = express();
+// # DB stuff
+// __________
 
-// DB STUFF
 var mongo = require('mongodb');
 var monk = require('monk');
-// var db = monk('localhost:27017/stachetag');
-// var mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost/mydb';
-var mongoUri = process.env.MONGOHQ_URL || 'localhost:27017/stachetag';
 
-//mongodb://user:pass@host:port/dbnam
+// format: mongodb://user:pass@host:port/dbnam
+var mongoUri = process.env.MONGOHQ_URL || 'localhost:27017/stachetag';
 
 var db = monk(mongoUri);
 
-// mongo.Db.connect(mongoUri, function (err, db) {
-//   db.collection('mydocs', function(er, collection) {
-//     collection.insert({'mykey': 'myvalue'}, {safe: true}, function(er,rs) {
-//
-//     });
-//   });
-// });
+// # Express stuff
+// ______________
+
+var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 5000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
@@ -38,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-// sample app from heroku
+// sample app from heroku 
 
 app.use(logfmt.requestLogger());
 
@@ -49,6 +44,8 @@ app.get('/', function(req, res) {
 app.get('/bonnie', function(req, res) {
   res.send('Hello Bonnie!');
 });
+
+// sample app for using mongo
 
 app.get('/userlist', routes.userlist(db));
 
