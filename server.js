@@ -9,7 +9,21 @@ var app = express();
 // DB STUFF
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/stachetag');
+// var db = monk('localhost:27017/stachetag');
+// var mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost/mydb';
+var mongoUri = process.env.MONGOHQ_URL || 'localhost:27017/stachetag';
+
+//mongodb://user:pass@host:port/dbnam
+
+var db = monk(mongoUri);
+
+// mongo.Db.connect(mongoUri, function (err, db) {
+//   db.collection('mydocs', function(er, collection) {
+//     collection.insert({'mykey': 'myvalue'}, {safe: true}, function(er,rs) {
+//
+//     });
+//   });
+// });
 
 // all environments
 app.set('port', process.env.PORT || 3000);
