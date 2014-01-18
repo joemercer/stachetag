@@ -8,6 +8,10 @@ app.get('/', function(req, res) {
   res.send('Hello World!');
 });
 
+app.get('/bonnie', function(req, res) {
+  res.send('Hello Bonnie!');
+});
+
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
