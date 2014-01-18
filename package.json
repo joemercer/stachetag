@@ -1,0 +1,13 @@
+{
+  "name": "stachetag",
+  "description": "Hacking the Twitter API",
+  "repository": {
+  	"type": "git",
+  	"url": "https://github.com/joemercer/stachetag.git"
+  },
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.x"
+  }
+}
