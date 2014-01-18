@@ -11,7 +11,10 @@
   "license": "MIT",
   "dependencies": {
     "express": "~3.4.8",
-    "logfmt": "~0.18.1"
+    "logfmt": "~0.18.1",
+    "jade": "*",
+    "mongodb": "*",
+    "monk": "*"
   },
   "engines": {
     "node": "0.10.x"
