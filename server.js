@@ -1,4 +1,5 @@
 var express = require('express');
+var logfmt = require("logfmt");
 var routes = require('./routes');
 var http = require('http');
 var path = require('path');
@@ -21,15 +22,21 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-//GET
-app.get('/', function(req, res){
-  res.send('Hello World');
+
+
+// sample app from heroku
+
+app.use(logfmt.requestLogger());
+
+app.get('/', function(req, res) {
+  res.send('Hello World!');
 });
 
-app.get('/joe', function(req, res){
-  res.send('Hello Joe');
+app.get('/bonnie', function(req, res) {
+  res.send('Hello Bonnie!');
 });
-app.get('/userlist', routes.userlist(db));
 
-app.listen(3000);
-console.log('Listening on port 3000');
+var port = process.env.PORT || 5000;
+app.listen(port, function() {
+  console.log("Listening on " + port);
+});
