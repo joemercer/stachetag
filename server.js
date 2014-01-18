@@ -29,7 +29,12 @@ app.get('/', function(req, res){
 app.get('/joe', function(req, res){
   res.send('Hello Joe');
 });
+
 app.get('/userlist', routes.userlist(db));
+
+//writing to the db
+app.get('/newuser', routes.newuser);
+app.post('/adduser', routes.adduser(db));
 
 app.listen(3000);
 console.log('Listening on port 3000');
