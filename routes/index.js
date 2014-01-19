@@ -35,21 +35,34 @@ exports.adduser = function(db) {
 }
 
 
-exports.tweet = function(req, res) {
-	var Twit = require("twit");
+exports.tweet = function(db, user_id) {
+	return function(req, res) {
+		var user_id = req.session.oauth.user_id;
+		var collection = db.get('users');
+		collection.findOne({user_id: user_id}, function(err, user) {
+		  if( err || !user || user.length === 0) {
+		  	console.log('Cannot find User')
+		  } else {
+		    console.log(user.access_token_secret);
+		    var Twit = require("twit");
 
-	var T = new Twit({
-		consumer_key: 				'cCw9Tm99H3rEwfpxODQ',
-		consumer_secret: 			'OHx2mlYa7LmRUFF3fTEeFCPDwyet74qy62MtlV6zU',
-		access_token: 				'17828953-z6VIudrcSia55FflgOYnQN68jIpaQM0BASoA6bE5Z',
-		access_token_secret: 	'iubwPQ4FTRXjNd06ciOQkvmMVANuyVhyKs0PmxD4gdKtg'
-	})
+		    var T = new Twit({
+					consumer_key: 				'cCw9Tm99H3rEwfpxODQ',
+					consumer_secret: 			'OHx2mlYa7LmRUFF3fTEeFCPDwyet74qy62MtlV6zU',
+					access_token: 				user.access_token,
+					access_token_secret: 	user.access_token_secret
+				})
 
-	var stream = T.stream('user');
+				var stream = T.stream('user');
 
-	stream.on('user_event', function (tweet) {
-	  console.log('got user_event:', tweet);
-	});
+				stream.on('user_event', function (tweet) {
+					console.log('got user_event:', tweet);
+				});
 
-	res.send("hi");
+				res.send('Twitter stream is opened for user id: ' + user_id);
+
+		  }
+		});
+
+	}
 }
