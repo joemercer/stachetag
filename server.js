@@ -20,13 +20,23 @@ var oa = new OAuth(
 	"HMAC-SHA1"
 );
 
-// DB STUFF
+// # DB stuff
+// __________
+
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/stachetag');
+
+// format: mongodb://user:pass@host:port/dbnam
+var mongoUri = process.env.MONGOHQ_URL || 'localhost:27017/stachetag';
+
+var db = monk(mongoUri);
+
+// # Express stuff
+// ______________
+var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 5000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
@@ -35,8 +45,6 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-
-// sample app from heroku
 
 app.use(logfmt.requestLogger());
 
@@ -47,6 +55,8 @@ app.get('/', function(req, res) {
 app.get('/bonnie', function(req, res) {
   res.send('Hello Bonnie!');
 });
+
+// sample app for using mongo
 
 app.get('/userlist', routes.userlist(db));
 
