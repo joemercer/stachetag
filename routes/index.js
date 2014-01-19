@@ -33,3 +33,23 @@ exports.adduser = function(db) {
 		});
 	}
 }
+
+
+exports.tweet = function(req, res) {
+	var Twit = require("twit");
+
+	var T = new Twit({
+		consumer_key: 				'cCw9Tm99H3rEwfpxODQ',
+		consumer_secret: 			'OHx2mlYa7LmRUFF3fTEeFCPDwyet74qy62MtlV6zU',
+		access_token: 				'17828953-z6VIudrcSia55FflgOYnQN68jIpaQM0BASoA6bE5Z',
+		access_token_secret: 	'iubwPQ4FTRXjNd06ciOQkvmMVANuyVhyKs0PmxD4gdKtg'
+	})
+
+	var stream = T.stream('user');
+
+	stream.on('user_event', function (tweet) {
+	  console.log('got user_event:', tweet);
+	});
+
+	res.send("hi");
+}
