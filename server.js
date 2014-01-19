@@ -87,20 +87,23 @@ app.get('/auth/twitter/callback', function(req, res, next){
 				console.log(results);
 
 				var collection = db.get('users');
-				console.log(collection.find({"user_id":results.user_id}));
-				if(!collection.find({"user_id":results.user_id})) {
-					collection.insert({
-						"user_id": results.user_id,
-						"access_token" : oauth_access_token,
-						"access_token_secret" : oauth_access_token_secret
-					}, function (err, dot) {
-						if (err) {
-							res.send("There was a problem adding the information to the database.");
-						} else {
-							res.send("tada, it worked");
-						}
-					});
-				}
+				collection.find({user_id: results.user_id}, function(err, users) {
+				  if( err || !users || users.length === 0) {
+				  	collection.insert({
+							"user_id": results.user_id,
+							"access_token" : oauth_access_token,
+							"access_token_secret" : oauth_access_token_secret
+						}, function (err, dot) {
+							if (err) {
+								res.send("There was a problem adding the information to the database.");
+							} else {
+								res.send("tada, it worked");
+							}
+						});
+				  } else {
+				    console.log("User already exists");
+				  }
+				});
 				res.send("worked. nice one.");
 			}
 		}
